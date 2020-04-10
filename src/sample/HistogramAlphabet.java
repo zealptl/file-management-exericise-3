@@ -27,7 +27,7 @@ public class HistogramAlphabet {
     }
 
     //Methods
-    public LinkedHashMap<Character, Integer> readFile(String fileLocation) throws IOException {
+    private LinkedHashMap<Character, Integer> readFile(String fileLocation) throws IOException {
         LinkedHashMap<Character, Integer> temp = new LinkedHashMap<>();
         for (char c = 'a'; c <= 'z'; c++) {
             temp.put(c,0);
@@ -44,7 +44,7 @@ public class HistogramAlphabet {
             }
         }
 
-        LinkedHashMap<Character, Integer> sorted = temp
+        temp = temp
                 .entrySet()
                 .stream()
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
@@ -52,7 +52,7 @@ public class HistogramAlphabet {
                         toMap(Map.Entry::getKey, Map.Entry::getValue, (e1,e2) -> e2, LinkedHashMap::new)
                 );
 
-        return sorted;
+        return temp;
     }
 
 //    public LinkedHashMap<Character, Integer> sortFrequency() {
@@ -66,12 +66,11 @@ public class HistogramAlphabet {
 //        return sorted;
 //    }
 
-    public LinkedHashMap<Character, Double> findProbabilities() {
+    private LinkedHashMap<Character, Double> findProbabilities() {
         LinkedHashMap<Character, Double> temp = new LinkedHashMap<>();
         int total = 0;
         for (int value: this.frequency.values())
             total += value;
-        System.out.println(total);
 
         for (Map.Entry<Character, Integer> entry: this.frequency.entrySet()) {
             double entryProbability = (double) entry.getValue() / total;
